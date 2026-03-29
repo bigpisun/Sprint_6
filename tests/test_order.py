@@ -31,7 +31,7 @@ class TestOrder:
             order_page.confirm_order()
         
         with allure.step('Проверка успешного оформления'):
-            assert order_page.is_order_successful(), 'Заказ не был оформлен'
+            assert order_page.is_order_successful()
     
     @allure.title('Проверка перехода на главную страницу по логотипу Самоката')
     def test_scooter_logo_redirect(self, driver):

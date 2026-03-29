@@ -18,4 +18,4 @@ class TestFAQ:
         
         with allure.step('Проверка текста ответа'):
             actual_answer = main_page.get_faq_answer_text(index)
-            assert actual_answer == expected_answer, f'Ожидался ответ: {expected_answer}, получен: {actual_answer}'
+            assert actual_answer == expected_answer
