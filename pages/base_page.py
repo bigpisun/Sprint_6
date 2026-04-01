@@ -8,15 +8,42 @@ class BasePage:
         self.wait = WebDriverWait(driver, 10)
 
     def click_element(self, locator):
+        """Клик по элементу с прокруткой"""
         element = self.wait.until(EC.presence_of_element_located(locator))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
         self.driver.execute_script("arguments[0].click();", element)
 
     def send_keys(self, locator, text):
+        """Ввод текста с очисткой поля"""
         element = self.wait.until(EC.visibility_of_element_located(locator))
         element.clear()
         element.send_keys(text)
 
     def get_text(self, locator):
+        """Получить текст элемента"""
         element = self.wait.until(EC.visibility_of_element_located(locator))
         return element.text
+
+    def js_click(self, locator):
+        """Клик через JavaScript (обходит перекрытия)"""
+        element = self.wait.until(EC.presence_of_element_located(locator))
+        self.driver.execute_script("arguments[0].click();", element)
+
+    def wait_for_new_window(self, expected_windows=2):
+        """Ожидание открытия новой вкладки"""
+        self.wait.until(lambda d: len(d.window_handles) == expected_windows)
+
+    def switch_to_new_window(self, current_window):
+        """Переключение на новую вкладку"""
+        for window_handle in self.driver.window_handles:
+            if window_handle != current_window:
+                self.driver.switch_to.window(window_handle)
+                break
+
+    def accept_cookies(self, cookie_button_locator):
+        """Закрыть куки, если есть"""
+        try:
+            cookie_button = self.wait.until(EC.element_to_be_clickable(cookie_button_locator))
+            cookie_button.click()
+        except:
+            pass
