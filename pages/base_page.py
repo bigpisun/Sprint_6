@@ -29,6 +29,15 @@ class BasePage:
         element = self.wait.until(EC.presence_of_element_located(locator))
         self.driver.execute_script("arguments[0].click();", element)
 
+    def js_scroll_and_click(self, element):
+        """Скролл к элементу и клик через JavaScript"""
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        self.driver.execute_script("arguments[0].click();", element)
+
+    def wait_for_elements(self, locator):
+        """Получить все элементы по локатору"""
+        return self.wait.until(EC.presence_of_all_elements_located(locator))
+
     def wait_for_new_window(self, expected_windows=2):
         """Ожидание открытия новой вкладки"""
         self.wait.until(lambda d: len(d.window_handles) == expected_windows)
@@ -39,6 +48,14 @@ class BasePage:
             if window_handle != current_window:
                 self.driver.switch_to.window(window_handle)
                 break
+
+    def get_current_url(self):
+        """Получить текущий URL"""
+        return self.driver.current_url
+
+    def get_current_window_handle(self):
+        """Получить текущий handle окна"""
+        return self.driver.current_window_handle
 
     def accept_cookies(self, cookie_button_locator):
         """Закрыть куки, если есть"""

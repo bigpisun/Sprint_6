@@ -24,12 +24,13 @@ class OrderPage(BasePage):
         period_option = self.locators.rental_period_option(period)
         self.js_click(period_option)
 
-    def select_color(self, color):
-        """Выбор цвета самоката"""
-        if color == 'чёрный жемчуг':
-            self.click_element(self.locators.COLOR_BLACK)
-        else:
-            self.click_element(self.locators.COLOR_GREY)
+    def select_black_color(self):
+        """Выбор чёрного цвета самоката"""
+        self.click_element(self.locators.COLOR_BLACK)
+
+    def select_grey_color(self):
+        """Выбор серого цвета самоката"""
+        self.click_element(self.locators.COLOR_GREY)
 
     def fill_first_form(self, data):
         """Заполнение первой формы заказа"""
@@ -40,11 +41,20 @@ class OrderPage(BasePage):
         self.send_keys(self.locators.PHONE_FIELD, data['phone'])
         self.click_element(self.locators.NEXT_BUTTON)
 
-    def fill_second_form(self, data):
-        """Заполнение второй формы заказа"""
+    def fill_second_form_black(self, data):
+        """Заполнение второй формы заказа (чёрный самокат)"""
         self.send_keys(self.locators.DATE_FIELD, data['date'])
         self.select_rental_period(data['rental_period'])
-        self.select_color(data['color'])
+        self.select_black_color()
+        self.send_keys(self.locators.COMMENT_FIELD, data['comment'])
+        self.click_element(self.locators.ORDER_BUTTON)
+        self.click_element(self.locators.CONFIRM_BUTTON)
+
+    def fill_second_form_grey(self, data):
+        """Заполнение второй формы заказа (серый самокат)"""
+        self.send_keys(self.locators.DATE_FIELD, data['date'])
+        self.select_rental_period(data['rental_period'])
+        self.select_grey_color()
         self.send_keys(self.locators.COMMENT_FIELD, data['comment'])
         self.click_element(self.locators.ORDER_BUTTON)
         self.click_element(self.locators.CONFIRM_BUTTON)

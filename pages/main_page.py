@@ -1,6 +1,5 @@
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class MainPage(BasePage):
@@ -27,9 +26,8 @@ class MainPage(BasePage):
 
     def click_faq_question(self, index):
         """Клик по вопросу FAQ по индексу"""
-        questions = self.wait.until(EC.presence_of_all_elements_located(self.locators.FAQ_QUESTIONS))
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", questions[index])
-        self.driver.execute_script("arguments[0].click();", questions[index])
+        questions = self.wait_for_elements(self.locators.FAQ_QUESTIONS)
+        self.js_scroll_and_click(questions[index])
 
     def get_faq_answer(self, index):
         """Получить текст ответа на вопрос по индексу"""
